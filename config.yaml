@@ -1,0 +1,128 @@
+# System Configuration
+
+database:
+  pool_size: 10
+  max_overflow: 20
+  echo: false
+
+data:
+  time_series_frequency: "monthly"  # monthly or weekly
+  min_history_periods: 12
+  forecast_horizon_months: 12  # 12-month rolling forecast aligned with 6-month procurement lead times
+  
+segmentation:
+  abc_percentiles:
+    a: 0.20  # Top 20%
+    b: 0.30  # Next 30%
+    c: 0.50  # Remaining 50%
+  xyz_cv_thresholds:
+    x: 0.5   # CV < 0.5 = predictable
+    y: 1.0   # CV between 0.5 and 1.0 = moderate
+    z: null  # CV > 1.0 = highly erratic
+
+forecasting:
+  models:
+    - arima
+    - prophet
+    - xgboost
+    - lightgbm
+    - croston
+    - sba
+    - moving_average
+  evaluation_metrics:
+    - mape
+    - mae
+    - rmse
+    - bias
+    - mase
+  cross_validation:
+    n_splits: 5
+    test_size: 0.2
+
+optimization:
+  # ABC-specific service level targets
+  service_levels:
+    a: 0.95  # 95% for A-items
+    b: 0.90  # 90% for B-items
+    c: 0.85  # 85% for C-items
+  # Z-scores for service levels
+  z_scores:
+    a: 1.645  # For 95% service level
+    b: 1.282  # For 90% service level
+    c: 1.036  # For 85% service level
+  # Inventory policies (months of safety stock)
+  safety_stock_months:
+    a: 2.5  # 2-3 months for A-items
+    b: 1.5  # 1-2 months for B-items
+    c: 1.0  # 1 month for C-items
+  min_order_quantity: 1
+  enable_cost_weighting: false
+  # Purchasing constraints
+  monthly_budget_cap: null  # Set in BRL if needed
+  factory_capacity_constraints: false
+
+api:
+  version: "v1"
+  docs_enabled: true
+  rate_limit_per_minute: 60
+
+logging:
+  level: INFO
+  format: json
+  file: logs/app.log
+
+monitoring:
+  drift_detection_enabled: true
+  performance_tracking_enabled: true
+  alert_thresholds:
+    # ABC-specific MAPE targets
+    mape:
+      a: 0.15  # Alert if MAPE > 15% for A-items
+      b: 0.20  # Alert if MAPE > 20% for B-items
+      c: 0.30  # Alert if MAPE > 30% for C-items (qualitative acceptable)
+    stockout_risk: 0.10  # Alert if stockout risk > 10%
+
+# Performance requirements
+performance:
+  forecast_run_time_hours: 2  # Forecast run should complete < 2 hours for 3,000 SKUs
+  dashboard_load_time_seconds: 3  # Dashboard load time < 3 seconds
+
+# Data freshness requirements
+data_freshness:
+  sales_update: "daily"  # Update sales and inventory daily
+  inventory_update: "daily"
+  forecast_update: "monthly"  # Update forecasts monthly
+  recommendation_update: "weekly"  # Regenerate order recommendations weekly
+
+# Warehouse configuration
+warehouses:
+  - code: "BR-DC-MAIN"
+    name: "Brazil Main Distribution Center"
+    country: "BR"
+    is_main: true
+  - code: "BR-FACTORY-1"
+    name: "Brazil Factory 1"
+    country: "BR"
+    is_main: false
+  - code: "BR-FACTORY-2"
+    name: "Brazil Factory 2"
+    country: "BR"
+    is_main: false
+  - code: "US-DC"
+    name: "US Distribution Center"
+    country: "US"
+    is_main: false
+  - code: "DE-DC"
+    name: "Germany Distribution Center"
+    country: "DE"
+    is_main: false
+
+# Product categories (ABC Ltd specific)
+product_categories:
+  - "Temperature Sensors"
+  - "Thermostats"
+  - "Exhaust Sensors"
+  - "Ceramic Components"
+  - "Thermistors (PTC)"
+  - "Thermistors (NTC)"
+
