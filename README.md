@@ -1,6 +1,6 @@
-# Nexus Demand Forecaster — ML-Powered Demand Prediction & Inventory Optimization
+# DemandFlow — ML Demand Prediction & Dynamic Replenishment Engine
 
-[![CI](https://github.com/wataee/nexus-demand-forecaster/actions/workflows/ci.yml/badge.svg)](https://github.com/wataee/nexus-demand-forecaster/actions/workflows/ci.yml)
+[![CI](https://github.com/wataee/demandflow/actions/workflows/ci.yml/badge.svg)](https://github.com/wataee/demandflow/actions/workflows/ci.yml)
 [![Python 3.11+](https://img.shields.io/badge/python-3.11+-blue.svg)](https://www.python.org/)
 [![Scikit-Learn](https://img.shields.io/badge/scikit--learn-1.4-F7931E.svg)](https://scikit-learn.org/)
 [![LightGBM](https://img.shields.io/badge/LightGBM-4.3-brightgreen.svg)](https://lightgbm.readthedocs.io/)
@@ -47,7 +47,7 @@ Where:
 ## Project Structure
 
 ```
-nexus-demand-forecaster/
+demandflow/
 ├── app/
 │   ├── api/             # FastAPI REST endpoints for real-time predictions
 │   ├── config.py        # Forecasting parameters & service level configuration
@@ -69,8 +69,8 @@ nexus-demand-forecaster/
 
 ### 1. Installation
 ```bash
-git clone https://github.com/wataee/nexus-demand-forecaster.git
-cd nexus-demand-forecaster
+git clone https://github.com/wataee/demandflow.git
+cd demandflow
 
 python -m venv venv
 source venv/bin/activate
